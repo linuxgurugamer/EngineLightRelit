@@ -1,5 +1,9 @@
 ChangeLog
 
+1.6.3.1
+	Added AssemblyFileVersion
+	Updated version file for 1.12
+
 1.6.3
 	Added configurable settings for three values
 	Added stock setting page for the three values
