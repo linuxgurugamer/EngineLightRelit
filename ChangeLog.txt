@@ -1,5 +1,9 @@
 ChangeLog
 
+1.6.3.2
+	Thanks to github user @Judicator for this:
+		fixes Light from engine "broken" by Kerbalism or from not ignited engine with minThrust > 0
+
 1.6.3.1
 	Added AssemblyFileVersion
 	Updated version file for 1.12
