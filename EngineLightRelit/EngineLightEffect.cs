@@ -455,11 +455,6 @@ namespace EngineLightRelit
 #endif
 		        return; // I guess this might happen for a frame or two while a scene is still loading? should be harmless - we can wait
 	        }
-			if (  DynamicSettings.ConfigChanged)
-            {
-				initEngineLights();
-				DynamicSettings.ConfigChanged = false;
-			}
 			try
 			{
 				// these _really_ shouldn't be happening - if one does we need to fix it, not ignore it. 

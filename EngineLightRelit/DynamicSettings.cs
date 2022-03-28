@@ -35,8 +35,6 @@ namespace EngineLightRelit
         Rect win;
         bool visible = false;
 
-        internal static bool ConfigChanged = false;
-
         void Start()
         {
             win = new Rect(100, 100, 400, 175);
@@ -63,7 +61,6 @@ namespace EngineLightRelit
         void Toggle()
         {
             visible = !visible;
-            ConfigChanged = false;
         }
         int id = 457984233;
         void OnGUI()
@@ -89,7 +86,6 @@ namespace EngineLightRelit
             if (newValue != HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightFadeCoefficient)
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightFadeCoefficient = newValue;
-                ConfigChanged = true;
             }
             GUILayout.EndHorizontal();
 
@@ -101,7 +97,6 @@ namespace EngineLightRelit
             if (newValue != HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightPower)
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightPower = newValue;
-                ConfigChanged = true;
             }
             GUILayout.EndHorizontal();
 
@@ -113,7 +108,6 @@ namespace EngineLightRelit
             if (newValue != HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightRange)
             {
                 HighLogic.CurrentGame.Parameters.CustomParams<EL>().lightRange = newValue;
-                ConfigChanged = true;
             }
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
