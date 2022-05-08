@@ -1,5 +1,8 @@
 ChangeLog
 
+1.6.3.3
+	Fixed issue when changing values of when settings changed multiple light sources were being added, old light sources weren't removed
+
 1.6.3.2
 	Thanks to github user @Judicator for this:
 		fixes Light from engine "broken" by Kerbalism or from not ignited engine with minThrust > 0
