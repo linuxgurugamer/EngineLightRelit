@@ -348,11 +348,11 @@ namespace EngineLightRelit
                     enableEmissiveLight = false;
                 else
                 {
-                    if (emissiveColor == null)
+                    if (emissiveColor.a == 0)
                         emissiveColor = emissiveColorBase = new Color(emissiveRed, emissiveGreen, emissiveBlue);
-                    if (emissiveColorLogModifier == null)
+                    if (emissiveColorLogModifier.a == 0)
                         emissiveColorLogModifier = new Color(emissiveLogRed, emissiveLogGreen, emissiveLogBlue);
-                    if (emissiveColorQuadModifier == null)
+                    if (emissiveColorQuadModifier.a == 0)
                         emissiveColorQuadModifier = new Color(emissiveQuadRed, emissiveQuadGreen, emissiveQuadBlue);
                 }
 
