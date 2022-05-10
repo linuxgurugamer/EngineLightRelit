@@ -356,14 +356,16 @@ namespace EngineLightRelit
                         emissiveColorQuadModifier = new Color(emissiveQuadRed, emissiveQuadGreen, emissiveQuadBlue);
                 }
 
-                exhaustColor = new Color(exhaustRed, exhaustGreen, exhaustBlue);
+                if (exhaustColor.a == 0)
+                    exhaustColor = new Color(exhaustRed, exhaustGreen, exhaustBlue);
 
                 // increase the minimum light range for larger parts
                 AttachNode node = this.part.FindModuleImplementing<AttachNode>();
                 if (node != null)
                     minimumLightRange += node.radius;
 
-                jitterBuffer = new JitterBuffer();
+                if (jitterBuffer == null)
+                    jitterBuffer = new JitterBuffer();
 
                 // cache function call
                 float maxThrust = engineModule.getMaxThrust();
@@ -404,7 +406,8 @@ namespace EngineLightRelit
                 engineLightObject.transform.position = averageThrustTransform;
 
                 // this (like colour) is applied per-frame - because it looks better
-                lightOffset = new Vector3(lightOffsetX, 0, lightOffsetY);
+                if (lightOffsetX != lightOffset.x || lightOffsetY != lightOffset.z)
+                    lightOffset.Set(lightOffsetX, 0, lightOffsetY);
 
                 // and we're done - register our local variables and flag success
                 //this.engineLightObject = engineLightObject;
