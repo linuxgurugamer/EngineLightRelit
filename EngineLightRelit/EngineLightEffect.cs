@@ -349,15 +349,36 @@ namespace EngineLightRelit
                 else
                 {
                     if (emissiveColor.a == 0)
-                        emissiveColor = emissiveColorBase = new Color(emissiveRed, emissiveGreen, emissiveBlue);
+                    {
+                        emissiveColor.r = emissiveColorBase.r = emissiveRed;
+                        emissiveColor.g = emissiveColorBase.g = emissiveGreen;
+                        emissiveColor.b = emissiveColorBase.b = emissiveBlue;
+                        emissiveColor.a = emissiveColorBase.a = 1;
+                    }
                     if (emissiveColorLogModifier.a == 0)
-                        emissiveColorLogModifier = new Color(emissiveLogRed, emissiveLogGreen, emissiveLogBlue);
+                    {
+                        emissiveColorLogModifier.r = emissiveLogRed;
+                        emissiveColorLogModifier.g = emissiveLogGreen;
+                        emissiveColorLogModifier.b = emissiveLogBlue;
+                        emissiveColorLogModifier.a = 1;
+                    }
                     if (emissiveColorQuadModifier.a == 0)
-                        emissiveColorQuadModifier = new Color(emissiveQuadRed, emissiveQuadGreen, emissiveQuadBlue);
+                    {
+                        emissiveColorQuadModifier.r = emissiveQuadRed;
+                        emissiveColorQuadModifier.g = emissiveQuadGreen;
+                        emissiveColorQuadModifier.b = emissiveQuadBlue;
+                        emissiveColorQuadModifier.a = 1;
+                    }
                 }
+                Utils.log("Vandest verif - After: emissiveColor = " + emissiveColor.ToString());
 
                 if (exhaustColor.a == 0)
-                    exhaustColor = new Color(exhaustRed, exhaustGreen, exhaustBlue);
+                {
+                    exhaustColor.r = exhaustRed;
+                    exhaustColor.g = exhaustGreen;
+                    exhaustColor.b = exhaustBlue;
+                    exhaustColor.a = 1;
+                }
 
                 // increase the minimum light range for larger parts
                 AttachNode node = this.part.FindModuleImplementing<AttachNode>();
