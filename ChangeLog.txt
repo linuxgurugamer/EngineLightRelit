@@ -1,5 +1,10 @@
 ChangeLog
 
+1.6.3.4
+	Thanks to github user @vandest1 for this:
+		Fixed some small issues with the emitters
+		Remade config of solid fuel boosters to make emissive adjusted to match with nozzle
+
 1.6.3.3
 	Fixed issue when changing values of when settings changed multiple light sources were being added, old light sources weren't removed
 
