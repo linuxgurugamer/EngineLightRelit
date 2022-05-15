@@ -348,22 +348,45 @@ namespace EngineLightRelit
                     enableEmissiveLight = false;
                 else
                 {
-                    if (emissiveColor == null)
-                        emissiveColor = emissiveColorBase = new Color(emissiveRed, emissiveGreen, emissiveBlue);
-                    if (emissiveColorLogModifier == null)
-                        emissiveColorLogModifier = new Color(emissiveLogRed, emissiveLogGreen, emissiveLogBlue);
-                    if (emissiveColorQuadModifier == null)
-                        emissiveColorQuadModifier = new Color(emissiveQuadRed, emissiveQuadGreen, emissiveQuadBlue);
+                    if (emissiveColor.a == 0)
+                    {
+                        emissiveColor.r = emissiveColorBase.r = emissiveRed;
+                        emissiveColor.g = emissiveColorBase.g = emissiveGreen;
+                        emissiveColor.b = emissiveColorBase.b = emissiveBlue;
+                        emissiveColor.a = emissiveColorBase.a = 1;
+                    }
+                    if (emissiveColorLogModifier.a == 0)
+                    {
+                        emissiveColorLogModifier.r = emissiveLogRed;
+                        emissiveColorLogModifier.g = emissiveLogGreen;
+                        emissiveColorLogModifier.b = emissiveLogBlue;
+                        emissiveColorLogModifier.a = 1;
+                    }
+                    if (emissiveColorQuadModifier.a == 0)
+                    {
+                        emissiveColorQuadModifier.r = emissiveQuadRed;
+                        emissiveColorQuadModifier.g = emissiveQuadGreen;
+                        emissiveColorQuadModifier.b = emissiveQuadBlue;
+                        emissiveColorQuadModifier.a = 1;
+                    }
                 }
+                Utils.log("Vandest verif - After: emissiveColor = " + emissiveColor.ToString());
 
-                exhaustColor = new Color(exhaustRed, exhaustGreen, exhaustBlue);
+                if (exhaustColor.a == 0)
+                {
+                    exhaustColor.r = exhaustRed;
+                    exhaustColor.g = exhaustGreen;
+                    exhaustColor.b = exhaustBlue;
+                    exhaustColor.a = 1;
+                }
 
                 // increase the minimum light range for larger parts
                 AttachNode node = this.part.FindModuleImplementing<AttachNode>();
                 if (node != null)
                     minimumLightRange += node.radius;
 
-                jitterBuffer = new JitterBuffer();
+                if (jitterBuffer == null)
+                    jitterBuffer = new JitterBuffer();
 
                 // cache function call
                 float maxThrust = engineModule.getMaxThrust();
@@ -404,7 +427,8 @@ namespace EngineLightRelit
                 engineLightObject.transform.position = averageThrustTransform;
 
                 // this (like colour) is applied per-frame - because it looks better
-                lightOffset = new Vector3(lightOffsetX, 0, lightOffsetY);
+                if (lightOffsetX != lightOffset.x || lightOffsetY != lightOffset.z)
+                    lightOffset.Set(lightOffsetX, 0, lightOffsetY);
 
                 // and we're done - register our local variables and flag success
                 //this.engineLightObject = engineLightObject;
