@@ -1,5 +1,9 @@
 ChangeLog
 
+1.6.4.1
+	Removed some log spam
+	Added check for resources:  FSCoolant (Firespitter) and IntakeLqd (MOIST)
+
 1.6.4
 	Updated version file to use github for new version info
 	Added check for electric and xenon engines to NOT show light

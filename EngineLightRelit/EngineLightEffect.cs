@@ -107,13 +107,18 @@ namespace EngineLightRelit
             {
                 if (module == null) // this is how much I trust the KSP API...
                     throw new Exception("could not really locate an engine on part: " + part.name);
+
+                // Check for non-burning propellants:
+                // 
+                // For stock, ignore ElectricCharge and Xenon
+                // For Firespitter, ignore FSCoolant
+                // For MOIST, ignore IntakeLqd
                 if (module is ModuleEnginesFX)
                 {
                     ModuleEnginesFX m = module as ModuleEnginesFX;
                     foreach (Propellant p in m.propellants)
                     {
-                        Debug.Log("EngineLightRelit, propellant name: " + p.name);
-                        if (p.name != "ElectricCharge" && p.name != "Xenon")
+                        if (p.name != "ElectricCharge" && p.name != "Xenon" && p.name != "FSCoolant" && p.name != "IntakeLqd")
                             isNotElectric = true;
                     }
                 }
@@ -124,8 +129,7 @@ namespace EngineLightRelit
                         ModuleEngines m = module as ModuleEngines;
                         foreach (Propellant p in m.propellants)
                         {
-                            Debug.Log("EngineLightRelit, propellant name: " + p.name);
-                            if (p.name != "ElectricCharge" && p.name != "Xenon")
+                            if (p.name != "ElectricCharge" && p.name != "Xenon" && p.name != "FSCoolant" && p.name != "IntakeLqd")
                                 isNotElectric = true;
                         }
                     }
