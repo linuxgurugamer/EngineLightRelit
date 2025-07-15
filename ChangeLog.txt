@@ -1,5 +1,9 @@
 ChangeLog
 
+1.6.4
+	Updated version file to use github for new version info
+	Added check for electric and xenon engines to NOT show light
+
 1.6.3.4
 	Thanks to github user @vandest1 for this:
 		Fixed some small issues with the emitters

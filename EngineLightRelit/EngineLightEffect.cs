@@ -35,7 +35,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 
 
@@ -93,31 +92,60 @@ namespace EngineLightRelit
 
         protected FXModuleAnimateThrottle engineEmissiveModule;
 
+
         public EngineModule(Part part)
         {
             // RAPIERs have two engine modules - they share an emissive texture, but not a throttle value
             modules = part.FindModulesImplementing<ModuleEngines>(); // do it once, do it in the right place
             moduleCount = modules.Count;
+            bool isNotElectric = false;
+            hasEmissive = false;
+
             if (moduleCount < 1)
                 throw new Exception("could not locate an engine on part: " + part.name);
             foreach (var module in modules)
             {
                 if (module == null) // this is how much I trust the KSP API...
                     throw new Exception("could not really locate an engine on part: " + part.name);
+                if (module is ModuleEnginesFX)
+                {
+                    ModuleEnginesFX m = module as ModuleEnginesFX;
+                    foreach (Propellant p in m.propellants)
+                    {
+                        Debug.Log("EngineLightRelit, propellant name: " + p.name);
+                        if (p.name != "ElectricCharge" && p.name != "Xenon")
+                            isNotElectric = true;
+                    }
+                }
+                else
+                {
+                    if (module is ModuleEngines)
+                    {
+                        ModuleEngines m = module as ModuleEngines;
+                        foreach (Propellant p in m.propellants)
+                        {
+                            Debug.Log("EngineLightRelit, propellant name: " + p.name);
+                            if (p.name != "ElectricCharge" && p.name != "Xenon")
+                                isNotElectric = true;
+                        }
+                    }
+                }
             }
 
-            hasEmissive = false;
-            try
+            if (isNotElectric)
             {
-                // should pretty reliably test that we can read from the emissive
-                engineEmissiveModule = part.FindModuleImplementing<FXModuleAnimateThrottle>();
-                float emissive = 1 + engineEmissiveModule.animState; // should throw nullref on no emissive
-                if (emissive >= 1)
-                    hasEmissive = true;
-            }
-            catch (Exception)
-            {
-                /* nothing to do - no emissive isn't a big deal really */
+                try
+                {
+                    // should pretty reliably test that we can read from the emissive
+                    engineEmissiveModule = part.FindModuleImplementing<FXModuleAnimateThrottle>();
+                    float emissive = 1 + engineEmissiveModule.animState; // should throw nullref on no emissive
+                    if (emissive >= 1)
+                        hasEmissive = true;
+                }
+                catch (Exception)
+                {
+                    /* nothing to do - no emissive isn't a big deal really */
+                }
             }
         }
 
@@ -437,11 +465,11 @@ namespace EngineLightRelit
 
                 // this is how you do debug only printing...	
 #if DEBUG
-	Utils.log("Light calculations (" + this.part.name + ") resulted in: " + LightPower);
-	Utils.log("coords of engine: " + engineModule.transform.position);
-	Utils.log("coords of thrust: " + averageThrustTransform);
-	//Utils.log("coords of thrust offset: " + thrustOffset);
-	Utils.log("coords of light: " + engineLightObject.transform.position);
+                Utils.log("Light calculations (" + this.part.name + ") resulted in: " + LightPower);
+                Utils.log("coords of engine: " + engineModule.transform.position);
+                Utils.log("coords of thrust: " + averageThrustTransform);
+                //Utils.log("coords of thrust offset: " + thrustOffset);
+                Utils.log("coords of light: " + engineLightObject.transform.position);
 #else
                 Utils.log("Detected and activating for engine: (" + this.part.name + ")");
 #endif
@@ -459,7 +487,7 @@ namespace EngineLightRelit
                 return; //Beware the bugs!
 
 #if DEBUG
-	Utils.log("Initialized part (" + this.part.partName + ") Proceeding to patch!");
+            Utils.log("Initialized part (" + this.part.partName + ") Proceeding to patch!");
 #endif
 
             initEngineLights(); // allows manual init / re-init of module, probably
@@ -576,34 +604,34 @@ namespace EngineLightRelit
 
 #if DEBUG
 
-	if (lastReportTime < Time.time)
-	{
-		if (engineModule.isEnabled)
-		{
-			Utils.log("part: " + part.name);
-			Utils.log("fade rate: " + LightFadeCoefficient);
-			Utils.log("lightstate: " + lightState);
-			Utils.log("throttle: " + throttle);
-			Utils.log("jittered throttle: " + jitteredThrottle);
-			Utils.log("previous throttle: " + lastFrameThrottle);
-			Utils.log("intensity: " + engineLight.intensity);
-			Utils.log("color: " + engineLight.color);
-			Utils.log("range: " + engineLight.range);
-			if (enableEmissiveLight)
-			{
-				Utils.log("emissive: " + emissiveValue);
-				Utils.log("emissive intensity: " + emissiveIntensity);
-			}
-			Utils.log("coords of engine: " + engineModule.transform.position);
-			Utils.log("coords of thrust: " + averageThrustTransform);
-			//Utils.log("coords of thrust offset: " + thrustOffset);
-			Utils.log("coords of light: " + engineLightObject.transform.position);
-			Utils.log("");
-		}
+                if (lastReportTime < Time.time)
+                {
+                    if (engineModule.isEnabled)
+                    {
+                        Utils.log("part: " + part.name);
+                        Utils.log("fade rate: " + LightFadeCoefficient);
+                        Utils.log("lightstate: " + lightState);
+                        Utils.log("throttle: " + throttle);
+                        Utils.log("jittered throttle: " + jitteredThrottle);
+                        Utils.log("previous throttle: " + lastFrameThrottle);
+                        Utils.log("intensity: " + engineLight.intensity);
+                        Utils.log("color: " + engineLight.color);
+                        Utils.log("range: " + engineLight.range);
+                        if (enableEmissiveLight)
+                        {
+                            Utils.log("emissive: " + emissiveValue);
+                            Utils.log("emissive intensity: " + emissiveIntensity);
+                        }
+                        Utils.log("coords of engine: " + engineModule.transform.position);
+                        Utils.log("coords of thrust: " + averageThrustTransform);
+                        //Utils.log("coords of thrust offset: " + thrustOffset);
+                        Utils.log("coords of light: " + engineLightObject.transform.position);
+                        Utils.log("");
+                    }
 
-		lastReportTime = Time.time + 1;
-	}
-		
+                    lastReportTime = Time.time + 1;
+                }
+
 #endif
 
                 lastFrameThrottle = throttle;
